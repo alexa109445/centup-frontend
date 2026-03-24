@@ -1,0 +1,39 @@
+.cerchioEsterno {
+    width: 280px;
+    height: 280px;
+    border-radius: 50%;
+    border: 15px solid #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 20px rgba(0,0,0,0.05);
+}
+
+.cerchioInterno {
+    width: 230px;
+    height: 230px;
+    border-radius: 50%;
+    background-color: #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    box-shadow: inset 0px 4px 10px rgba(0,0,0,0.08);
+}
+
+.bottoneCategoria {
+    width: 85px;
+    height: 85px;
+    border-radius: 18px;
+    transition: all 0.2s ease-in-out;
+}
+
+.bottoneCategoria:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.1) !important;
+}
+
+.testoPiccolo {
+    font-size: 0.65rem;
+    font-weight: 700;
+}

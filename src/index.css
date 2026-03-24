@@ -1,0 +1,75 @@
+/* --- TEMA CENTUP (Verde Chiaro e Blu) --- */
+
+:root {
+  --centup-blue: #ffffff;         /* Blu intenso per loghi, testi e bottoni */
+  --centup-light-green: #f2f2f2;  /* Verde chiaro pastello per lo sfondo */
+  --centup-white: #27993a;        /* Bianco per le aree di lettura (Navbar, Card) */
+
+  --bs-primary: var(--centup-blue);
+  --bs-body-bg: var(--centup-light-green);
+}
+
+
+body {
+  background-color: var(--bs-body-bg);
+  color: var(--centup-blue); /* Imposta il blu come colore di testo predefinito */
+  font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+/* --- PERSONALIZZAZIONE COMPONENTI BOOTSTRAP --- */
+
+/* Navbar (Sfondo bianco per far leggere il testo blu) */
+.navbar.bg-dark {
+  background-color: var(--centup-white) !important;
+  border-bottom: 3px solid var(--centup-blue);
+}
+
+.navbar-brand {
+  color: var(--centup-blue) !important;
+  font-weight: 800;
+  font-size: 1.5rem;
+  letter-spacing: 1px;
+}
+
+.nav-link {
+  color: var(--centup-blue) !important;
+  font-weight: 500;
+}
+
+.nav-link:hover {
+  color: #000000 !important; /* Blu più scuro al passaggio del mouse */
+}
+
+/* Bottoni */
+.btn-primary {
+  background-color: var(--centup-blue) !important;
+  border-color: var(--centup-blue) !important;
+  color: var(--centup-white) !important;
+  font-weight: 700;
+  border-radius: 8px;
+}
+
+.btn-primary:hover {
+  background-color: #7294c6 !important; 
+  border-color: #73a2ea !important;
+}
+
+/* Card (Dashboard, Form e Simulatore) */
+.card {
+  border: 2px solid var(--centup-blue) !important;
+  border-radius: 12px;
+  background-color: var(--centup-white);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+}
+
+.card-header {
+  background-color: var(--centup-blue) !important;
+  color: var(--centup-white) !important;
+  border-bottom: none;
+  font-weight: bold;
+}
+
+/* Forza i testi secondari (di solito grigi in Bootstrap) a essere di un blu più tenue */
+.text-muted {
+  color: #5C77A3 !important; 
+}
