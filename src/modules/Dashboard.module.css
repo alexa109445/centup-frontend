@@ -1,39 +1,65 @@
-.cerchioEsterno {
-    width: 280px;
-    height: 280px;
-    border-radius: 50%;
-    border: 15px solid #ffffff;
+.textWhite {
+    color: white !important;
+}
+
+.textMuted {
+    color: rgba(255, 255, 255, 0.6) !important;
+    font-size: 0.9rem;
+}
+
+.cardInfo {
+    background-color: transparent;
+    border: 1px solid rgba(69, 18, 18, 0.1);
+    border-radius: 15px;
+    padding: 1.5rem;
+    height: 100%;
+}
+
+.cardSaldo {
+    background: linear-gradient(1deg, rgb(3, 22, 5), rgba(18, 201, 94, 0.2));
+}
+
+.cardCarte {
+    background: linear-gradient(1deg, rgb(31, 83, 95), rgba(75, 206, 212, 0.2));
+}
+
+.cardLabel {
+    font-size: 1rem;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 500;
+}
+
+.cardContent {
+    margin-top: 1 rem;
+}
+
+.saldoValore {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #fffefe;
+}
+
+.cardGrafico {
+    background: linear-gradient(1deg, rgb(85, 23, 86), rgb(163, 77, 77));
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow:  rgba(0, 0, 0, 0.05),
+        0 10px 30px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    margin-top: 2rem;
+}
+
+.graficoPlaceholder {
+    height: 250px;
     display: flex;
-    align-items: center;
     justify-content: center;
-    box-shadow: 0 0 20px rgba(0,0,0,0.05);
-}
-
-.cerchioInterno {
-    width: 230px;
-    height: 230px;
-    border-radius: 50%;
-    background-color: #ffffff;
-    display: flex;
     align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    box-shadow: inset 0px 4px 10px rgba(0,0,0,0.08);
+    background-color: rgba(255, 255, 255, 0.02);
+    border: 1px dashed rgba(255, 255, 255, 0.2);
+    border-radius: 10px;
 }
-
-.bottoneCategoria {
-    width: 85px;
-    height: 85px;
-    border-radius: 18px;
-    transition: all 0.2s ease-in-out;
-}
-
-.bottoneCategoria:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 12px rgba(0,0,0,0.1) !important;
-}
-
-.testoPiccolo {
-    font-size: 0.65rem;
-    font-weight: 700;
+body {
+    background: linear-gradient(135deg, #111e3b 0%, #0c0f13 100%);
+    margin: 0;
+    min-height: 100vh;
 }

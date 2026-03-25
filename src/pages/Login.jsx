@@ -15,7 +15,7 @@ const Login = () => {
         setErrore('');
 
         try {
-            const response = await axios.post('http://localhost:3001/api/login', { email, password });
+            const response = await axios.post('http://localhost:3001/api/utenti/login', { email, password });
             const utenteId = response.data.id; 
             
             localStorage.setItem('utenteId', utenteId);
@@ -32,17 +32,17 @@ const Login = () => {
                 <div className="text-center mb-4">
                     <i className={"bi bi-person-circle text-light " + styles.iconaAuth}></i>
                     <h2 className="fw-bold mt-2 text-light">Bentornato!</h2>
-                    <p className="text-light ">Accedi al tuo salvadanaio CentUp</p>
+                    <p className="text-light">Accedi al tuo salvadanaio CentUp</p>
                 </div>
 
                 {errore && <div className="alert alert-danger text-center">{errore}</div>}
 
                 <form onSubmit={handleSubmit}>
                     <div className="mb-3">
-                        <label className="form-label text-light fw-semibold">Email</label>
+                        <label className="form-label text-light ">Email</label>
                         <input 
                             type="email" 
-                            className="form-control bg-light border-0" 
+                            className="form-control border-0" 
                             value={email} 
                             onChange={(e) => setEmail(e.target.value)} 
                             placeholder="Inserisci qui la tua email"
@@ -50,10 +50,10 @@ const Login = () => {
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="form-label text-light fw-semibold">Password</label>
+                        <label className="form-label text-light ">Password</label>
                         <input 
                             type="password" 
-                            className="form-control bg-light border-0" 
+                            className="form-control border-0" 
                             value={password} 
                             onChange={(e) => setPassword(e.target.value)} 
                             placeholder="Inserisci qui la tua password"
@@ -61,7 +61,7 @@ const Login = () => {
                         />
                     </div>
                     
-                    <button type="submit" className="btn btn-primary w-100 fw-bold py-2 rounded-pill" >
+                    <button type="submit" className="btn btn-success w-100 fw-bold py-2 rounded-pill" >
                         Accedi
                     </button>
                 </form>
