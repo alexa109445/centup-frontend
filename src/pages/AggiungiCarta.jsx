@@ -1,64 +1,112 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import styles from '../modules/Dashboard.module.css';
+import styles from '../modules/Dashboard.module.css'; 
 
 const AggiungiCarta = () => {
-    const [numero, setNumero] = useState('');
+    const [numeroCarta, setNumeroCarta] = useState('');
     const [intestatario, setIntestatario] = useState('');
     const [scadenza, setScadenza] = useState('');
-    const navigate = useNavigate();
+    
+    const navigazione = useNavigate();
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();
-        const utenteId = localStorage.getItem('utenteId');
+    const gestisciCambioCarta = (evento) => {
+        let valore = evento.target.value;
+        let soloNumeri = valore.replace(/\D/g, '');
+        
+        let risultato = '';
+        for (let i = 0; i < soloNumeri.length; i++) {
+            if (i > 0 && i % 4 === 0) {
+                risultato += ' ';
+            }
+            risultato += soloNumeri[i];
+        }
 
-        const nuovaCarta = {
-            utenteId: parseInt(utenteId),
-            numero: numero,
-            intestatario: intestatario,
-            scadenza: scadenza
-        };
+        if (risultato.length > 19) {
+            risultato = risultato.substring(0, 19);
+        }
+        
+        setNumeroCarta(risultato);
+    };
+
+    const gestisciCambioScadenza = (evento) => {
+        let valore = evento.target.value;
+        let soloNumeri = valore.replace(/\D/g, '');
+
+        let risultato = '';
+        if (soloNumeri.length > 2) {
+            let mese = soloNumeri.substring(0, 2);
+            let anno = soloNumeri.substring(2, 4);
+            risultato = mese + '/' + anno;
+        } else {
+            risultato = soloNumeri;
+        }
+
+        setScadenza(risultato);
+    };
+
+    const salvaCarta = async () => {
+        const idUtente = localStorage.getItem('utenteId');
+        if (!idUtente) {
+            navigazione('/login');
+            return;
+        }
 
         try {
-            await axios.post('http://localhost:3001/api/carte', nuovaCarta);
-            navigate('/dashboard');
-        } catch (error) {
-            console.error("Errore nell'aggiunta della carta:", error);
-            alert("Errore durante il salvataggio.");
+            const cartaPulita = numeroCarta.replace(/\s/g, '');
+            await axios.post('http://localhost:3001/api/carte', {
+                utenteId: idUtente,
+                numero: cartaPulita,
+                intestatario: intestatario,
+                scadenza: scadenza
+            });
+            navigazione('/dashboard');
+        } catch (errore) {
+            console.log(errore);
         }
     };
 
     return (
-        <div className="container mt-5 text-white">
-            <div className="row justify-content-center">
-                <div className="col-md-6">
-                    <div className={styles.cardGrafico}>
-                        <h2 className="mb-4">Collega una Carta</h2>
-                        <form onSubmit={handleSubmit}>
-                            <div className="mb-3">
-                                <label className="form-label">Numero Carta</label>
-                                <input type="text" className="form-control" placeholder="1234 5678 9012 3456"
-                                value={numero} onChange={(e) => setNumero(e.target.value)} required />
-                            </div>
-                            <div className="mb-3">
-                                <label className="form-label">Intestatario</label>
-                                <input type="text" className="form-control" 
-                                placeholder="Nome e cognome"
-                                value={intestatario} onChange={(e) => setIntestatario(e.target.value)} required />
-                            </div>
-                            <div className="mb-3">
-                                <label className="form-label">Scadenza (MM/AA)</label>
-                                <input type="text" className="form-control"
-                                placeholder="MM/AA"
-                                value={scadenza} onChange={(e) => setScadenza(e.target.value)} required />
-                            </div>
-                            <div className="d-flex gap-2">
-                                <button type="submit" className="btn btn-success">Salva</button>
-                                <button type="button" className="btn btn-outline-light" onClick={() => navigate('/dashboard')}>Annulla</button>
-                            </div>
-                        </form>
-                    </div>
+        <div className={styles.schermataCentrata}>
+            <div className={styles.cardAggiungi}>
+                <h3 className="mb-4 text-white">Collega una Carta</h3>
+                
+                <div className="mb-3">
+                    <label className="small opacity-75 d-block mb-1 text-white">Numero Carta</label>
+                    <input 
+                        type="text" 
+                        value={numeroCarta} 
+                        onChange={gestisciCambioCarta} 
+                        placeholder="1234 5678 9012 3456"
+                        className={"form-control " + styles.inputCarta}
+                    />
+                </div>
+
+                <div className="mb-3">
+                    <label className="small opacity-75 d-block mb-1 text-white">Intestatario</label>
+                    <input 
+                        type="text" 
+                        value={intestatario} 
+                        onChange={(e) => setIntestatario(e.target.value)} 
+                        placeholder="Nome e cognome"
+                        className={"form-control " + styles.inputCarta}
+                    />
+                </div>
+
+                <div className="mb-4">
+                    <label className="small opacity-75 d-block mb-1 text-white">Scadenza (MM/AA)</label>
+                    <input 
+                        type="text" 
+                        value={scadenza} 
+                        onChange={gestisciCambioScadenza} 
+                        placeholder="MM/AA"
+                        className={"form-control " + styles.inputCarta}
+                    />
+                </div>
+
+                <div className="d-flex gap-2">
+                    <button onClick={salvaCarta} className="btn btn-success fw-bold w-100">Salva</button>
+                    <button onClick={() => navigazione('/dashboard')} className="btn btn-outline-light fw-bold w-100">Annulla</button>
                 </div>
             </div>
         </div>

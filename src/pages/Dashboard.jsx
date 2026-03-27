@@ -2,164 +2,217 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styles from '../modules/Dashboard.module.css';
+import Header from '../components/Header';
+import SaldoCard from '../components/SaldoCard';
+import CarteCard from '../components/CarteCard';
+import ObiettivoCard from '../components/ObiettivoCard';
 
 const Dashboard = () => {
-    const [utente, setUtente] = useState(null);
-    const [carte, setCarte] = useState([]);
-    const [errore, setErrore] = useState('');
-    const navigate = useNavigate();
+    const [utenteCorrente, setUtenteCorrente] = useState(null);
+    const [listaCarte, setListaCarte] = useState([]);
+    const [messaggioErrore, setMessaggioErrore] = useState('');
+    
+    const [valoreObiettivo, setValoreObiettivo] = useState(100);
+    const [nomeObiettivo, setNomeObiettivo] = useState('Risparmio Generico');
+    const [iconaSelezionata, setIconaSelezionata] = useState('bi-piggy-bank-fill');
+    
+    const [idCartaVisibile, setIdCartaVisibile] = useState(null);
+    const [mostraInputEstensione, setMostraInputEstensione] = useState(false);
+    const [selettoreTrasferimentoAttivo, setSelettoreTrasferimentoAttivo] = useState(false);
+    const [selettoreDonazioneAttivo, setSelettoreDonazioneAttivo] = useState(false);
+    const [nascondiRaggiungimento, setNascondiRaggiungimento] = useState(false);
 
-    const fetchDati = async () => {
-        const utenteId = localStorage.getItem('utenteId');
+    const [messaggioSpesa, setMessaggioSpesa] = useState('');
+
+    const navigazione = useNavigate();
+
+    const recuperaDatiDalServer = async () => {
+        const idUtenteInSessione = localStorage.getItem('utenteId');
         try {
-            const resUtente = await axios.get(`http://localhost:3001/api/utenti/${utenteId}`);
-            setUtente(resUtente.data);
+            const rispostaUtente = await axios.get('http://localhost:3001/api/utenti/' + idUtenteInSessione);
+            const datiUtente = rispostaUtente.data;
+            setUtenteCorrente(datiUtente);
+            
+            if (datiUtente.obiettivoValore !== null) setValoreObiettivo(datiUtente.obiettivoValore);
+            if (datiUtente.obiettivoNome !== null) setNomeObiettivo(datiUtente.obiettivoNome);
+            if (datiUtente.obiettivoIcona !== null) setIconaSelezionata(datiUtente.obiettivoIcona);
 
-            const resCarte = await axios.get(`http://localhost:3001/api/carte/utente/${utenteId}`);
-            setCarte(resCarte.data);
-        } catch (error) {
-            console.error("Errore nel recupero dati:", error);
-            setErrore('Impossibile caricare i dati.');
+            const rispostaCarte = await axios.get('http://localhost:3001/api/carte/utente/' + idUtenteInSessione);
+            setListaCarte(rispostaCarte.data);
+        } catch (errore) {
+            setMessaggioErrore('Errore nel caricamento dei dati.');
         }
     };
 
     useEffect(() => {
-        const utenteId = localStorage.getItem('utenteId');
+        const idUtenteInSessione = localStorage.getItem('utenteId');
+        if (!idUtenteInSessione) {
+            navigazione('/login');
+            return;
+        }
+        recuperaDatiDalServer();
+    }, [navigazione]);
 
-        if (utenteId === null) {
-    navigate('/login');
-    return;
-}
+    const generaSpesaSimulata = async () => {
+        if (listaCarte.length === 0) {
+            alert("Aggiungi una carta!");
+            return;
+        }
+        const importoCasuale = parseFloat((Math.random() * 20 + 1).toFixed(2));
+        const arrotondamentoCalcolato = parseFloat((Math.ceil(importoCasuale) - importoCasuale).toFixed(2));
+        const saldoPrecedente = parseFloat(utenteCorrente.saldoSalvadanaio) || 0;
+        const nuovoSaldoAggiornato = (saldoPrecedente + arrotondamentoCalcolato).toFixed(2);
 
-if (utenteId === undefined) {
-    navigate('/login');
-    return;
-}
+        let testo = "Hai speso " + importoCasuale.toFixed(2) + " € ed hai risparmiato " + arrotondamentoCalcolato.toFixed(2) + " €";
+        setMessaggioSpesa(testo);
 
-if (utenteId === '') {
-    navigate('/login');
-    return;
-}
+        try {
+            await axios.put('http://localhost:3001/api/utenti/' + utenteCorrente.id + '/saldo?nuovoSaldo=' + nuovoSaldoAggiornato);
+            setNascondiRaggiungimento(false);
+            recuperaDatiDalServer();
+        } catch (errore) {
+            alert("Errore nel salvataggio.");
+        }
+    };
 
-        fetchDati();
-    }, [navigate]);
+    const confermaTrasferimentoSuCarta = async (numeroDellaCarta) => {
+        try {
+            await axios.put('http://localhost:3001/api/utenti/' + utenteCorrente.id + '/saldo?nuovoSaldo=0.00');
+            setUtenteCorrente({ ...utenteCorrente, saldoSalvadanaio: "0.00" });
+            setSelettoreTrasferimentoAttivo(false);
+            setMostraInputEstensione(false);
+            alert('Hai trasferito con successo i fondi sulla carta: ' + numeroDellaCarta);
+            recuperaDatiDalServer();
+        } catch (errore) {
+            alert("Errore durante il trasferimento.");
+        }
+    };
 
-    const rimuoviCarta = async (id) => {
-        let conferma = window.confirm("Sei sicuro di volerla eliminare?");
-        
-        if (conferma === true) {
+    const confermaDonazioneBenefica = async (idEnte, nomeEnte) => {
+        try {
+            await axios.post('http://localhost:3001/api/donazioni/svuota/' + utenteCorrente.id + '/' + idEnte);
+            setUtenteCorrente({ ...utenteCorrente, saldoSalvadanaio: "0.00" });
+            setSelettoreDonazioneAttivo(false);
+            setMostraInputEstensione(false);
+            alert('Hai donato con successo a: ' + nomeEnte);
+            recuperaDatiDalServer();
+        } catch (errore) {
+            alert("Errore durante la donazione.");
+        }
+    };
+
+    const eliminaCartaDalDatabase = async (evento, idCartaDaEliminare) => {
+        evento.stopPropagation();
+        if (window.confirm("Eliminare questa carta?")) {
             try {
-                await axios.delete(`http://localhost:3001/api/carte/${id}`);
-                fetchDati();
-            } catch (error) {
-                console.error("Errore durante la rimozione:", error);
-                alert("Impossibile rimuovere la carta.");
+                await axios.delete('http://localhost:3001/api/carte/' + idCartaDaEliminare);
+                recuperaDatiDalServer();
+            } catch (errore) {
+                alert("Errore eliminazione.");
             }
         }
     };
 
-    const handleLogout = () => {
-        localStorage.removeItem('utenteId');
-        navigate('/login');
+    const mostraNascondiNumeroCarta = (idDellaCarta) => {
+        if (idCartaVisibile === idDellaCarta) {
+            setIdCartaVisibile(null);
+        } else {
+            setIdCartaVisibile(idDellaCarta);
+        }
     };
 
-    if (utente === null && errore === '') {
-        return <div className={"text-center mt-5 " + styles.textWhite}>Caricamento in corso...</div>;
-    }
-
-    let nomeDaMostrare = 'Utente';
-    if (utente !== null) {
-        nomeDaMostrare = utente.nome;
-    }
-
-    let saldoDaMostrare = '0.00';
-    if (utente !== null) {
-        if (utente.saldoSalvadanaio !== null) {
-            saldoDaMostrare = utente.saldoSalvadanaio.toFixed(2);
+    const salvaNuovoObiettivo = async () => {
+        const idUtenteInSessione = localStorage.getItem("utenteId");
+        const datiDaInviare = {
+            obiettivoValore: parseFloat(valoreObiettivo),
+            obiettivoNome: nomeObiettivo,
+            obiettivoIcona: iconaSelezionata
+        };
+        try {
+            await axios.put('http://localhost:3001/api/utenti/' + idUtenteInSessione + '/obiettivo', datiDaInviare);
+            setMostraInputEstensione(false);
+            setNascondiRaggiungimento(false);
+            alert("Obiettivo aggiornato!");
+            recuperaDatiDalServer();
+        } catch (errore) {
+            alert("Errore salvataggio obiettivo.");
         }
+    };
+
+    const effettuaLogout = () => {
+        if (window.confirm("Sei sicuro di voler uscire?")) {
+            localStorage.clear();
+            navigazione('/login');
+        }
+    };
+
+    const iconeDisponibili = [
+        { id: 1, classeCss: 'bi-car-front-fill' },
+        { id: 2, classeCss: 'bi-house-heart-fill' },
+        { id: 3, classeCss: 'bi-airplane-engines-fill' },
+        { id: 4, classeCss: 'bi-gift-fill' },
+        { id: 5, classeCss: 'bi-laptop-fill' },
+        { id: 6, classeCss: 'bi-piggy-bank-fill' }
+    ];
+
+    const listaEntiBenefici = [
+        { id: 1, nome: 'Greenpeace' },
+        { id: 2, nome: 'Croce Rossa' },
+        { id: 3, nome: 'Save the Children' }
+    ];
+
+    if (!utenteCorrente) {
+        return <div className="text-center mt-5 text-white">Caricamento in corso...</div>;
     }
 
-    let contenutoCarte;
-    if (carte.length === 0) {
-        contenutoCarte = <p className={styles.textMuted}>Nessuna carta presente.</p>;
-    } else {
-        let listaElementi = [];
-        for (let i = 0; i < carte.length; i = i + 1) {
-            let cartaSingola = carte[i];
-            listaElementi.push(
-                <li key={cartaSingola.id} className="mb-3 p-2 border-bottom border-white border-opacity-10">
-                    <div className="d-flex justify-content-between align-items-center">
-                        <div>
-                            <span className="fw-bold">{cartaSingola.numero}</span>
-                            <br />
-                            <small className={styles.textMuted}>{cartaSingola.intestatario}</small>
-                        </div>
-                        <button 
-                            onClick={() => rimuoviCarta(cartaSingola.id)} 
-                            className="btn btn-danger btn-sm"
-                            style={{fontSize: '10px', padding: '2px 5px'}}
-                        >
-                            Rimuovi
-                        </button>
+    const risparmioReale = parseFloat(utenteCorrente.saldoSalvadanaio);
+
+    let bloccoRiscontro = null;
+    if (messaggioSpesa !== "") {
+        bloccoRiscontro = (
+            <div className="row mb-3">
+                <div className="col-12">
+                    <div className="p-3 bg-success bg-opacity-25 border border-success rounded text-center text-white fw-bold">
+                        {messaggioSpesa}
                     </div>
-                </li>
-            );
-        }
-        contenutoCarte = <ul className="list-unstyled">{listaElementi}</ul>;
-    }
-
-    let visualizzazioneErrore = null;
-    if (errore !== '') {
-        visualizzazioneErrore = <div className="alert alert-danger mb-4">{errore}</div>;
+                </div>
+            </div>
+        );
     }
 
     return (
-        <div className={"container mt-5 " + styles.textWhite}>
+        <div className={" container-fluid px-3 px-md-5 mt-4 mb-5 " + styles.textWhite}>
+            <Header nomeUtente={utenteCorrente.nome} onLogout={effettuaLogout} />
             
-            <div className="d-flex justify-content-between align-items-center mb-5">
-                <h1 className="fw-bold m-0">Ciao, {nomeDaMostrare}!</h1>
-                <button onClick={handleLogout} className="btn btn-outline-light">
-                    Esci
-                </button>
+            {bloccoRiscontro}
+
+            <div className="row g-4 mb-4">
+                <SaldoCard saldo={utenteCorrente.saldoSalvadanaio} onGeneraSpesa={generaSpesaSimulata} />
+                <CarteCard 
+                    listaCarte={listaCarte} 
+                    onAggiungi={() => navigazione('/aggiungi-carta')} 
+                    idCartaVisibile={idCartaVisibile} 
+                    onMostraNascondi={mostraNascondiNumeroCarta} 
+                    onElimina={eliminaCartaDalDatabase} 
+                />
             </div>
 
-            {visualizzazioneErrore}
-
-            <div className="row g-4 mb-5">
-                <div className="col-12 col-md-6">
-                    <div className={styles.cardInfo + " " + styles.cardSaldo}>
-                        <h3 className={styles.cardLabel}>Saldo Salvadanaio</h3>
-                        <div className={styles.cardContent}>
-                            <h2 className={styles.saldoValore}>€ {saldoDaMostrare}</h2>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="col-12 col-md-6">
-                    <div className={styles.cardInfo + " " + styles.cardCarte}>
-                        <div className="d-flex justify-content-between align-items-center mb-3">
-                            <h3 className={styles.cardLabel + " m-0"}>Le tue Carte</h3>
-                            <button onClick={() => navigate('/aggiungi-carta')} className="btn btn-light btn-sm fw-bold">
-                                + Aggiungi
-                            </button>
-                        </div>
-                        <div className={styles.cardContent}>
-                            {contenutoCarte}
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div className="row">
-                <div className="col-12">
-                    <div className={styles.cardGrafico}>
-                        <h3 className={styles.cardLabel + " mb-4"}>Andamento Salvadanaio</h3>
-                        <div className={styles.graficoPlaceholder}>
-                            <p className={styles.textMuted}>Grafico non disponibile al momento.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <ObiettivoCard 
+                risparmioReale={risparmioReale}
+                valoreObiettivo={valoreObiettivo} setValoreObiettivo={setValoreObiettivo}
+                nomeObiettivo={nomeObiettivo} setNomeObiettivo={setNomeObiettivo}
+                iconaSelezionata={iconaSelezionata} setIconaSelezionata={setIconaSelezionata}
+                mostraInputEstensione={mostraInputEstensione} setMostraInputEstensione={setMostraInputEstensione}
+                selettoreTrasferimentoAttivo={selettoreTrasferimentoAttivo} setSelettoreTrasferimentoAttivo={setSelettoreTrasferimentoAttivo}
+                selettoreDonazioneAttivo={selettoreDonazioneAttivo} setSelettoreDonazioneAttivo={setSelettoreDonazioneAttivo}
+                nascondiRaggiungimento={nascondiRaggiungimento} setNascondiRaggiungimento={setNascondiRaggiungimento}
+                onSalvaObiettivo={salvaNuovoObiettivo}
+                onTrasferisci={confermaTrasferimentoSuCarta}
+                onDona={confermaDonazioneBenefica}
+                listaCarte={listaCarte}
+                iconeDisponibili={iconeDisponibili}
+                listaEntiBenefici={listaEntiBenefici}
+            />
         </div>
     );
 };

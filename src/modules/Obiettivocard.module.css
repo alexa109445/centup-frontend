@@ -1,0 +1,24 @@
+.cardGrafico {
+    background-color: #1a1a1a;
+    border-radius: 15px;
+    padding: 25px;
+    color: white;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+}
+
+.iconaViola {
+    font-size: 50px;
+    color: #331055;
+}
+
+.titoloViola {
+    font-weight: bold;
+    color: #a855f7;
+    font-size: 20px;
+}
+
+.testoPercentuale {
+    font-size: 24px;
+    font-weight: bold;
+}
+

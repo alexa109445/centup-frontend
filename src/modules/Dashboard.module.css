@@ -1,27 +1,4 @@
-.textWhite {
-    color: white !important;
-}
 
-.textMuted {
-    color: rgba(255, 255, 255, 0.6) !important;
-    font-size: 0.9rem;
-}
-
-.cardInfo {
-    background-color: transparent;
-    border: 1px solid rgba(69, 18, 18, 0.1);
-    border-radius: 15px;
-    padding: 1.5rem;
-    height: 100%;
-}
-
-.cardSaldo {
-    background: linear-gradient(1deg, rgb(3, 22, 5), rgba(18, 201, 94, 0.2));
-}
-
-.cardCarte {
-    background: linear-gradient(1deg, rgb(31, 83, 95), rgba(75, 206, 212, 0.2));
-}
 
 .cardLabel {
     font-size: 1rem;
@@ -36,18 +13,9 @@
 .saldoValore {
     font-size: 2.5rem;
     font-weight: bold;
-    color: #fffefe;
+    color: #ffffff;
 }
 
-.cardGrafico {
-    background: linear-gradient(1deg, rgb(85, 23, 86), rgb(163, 77, 77));
-    border-radius: 15px;
-    padding: 2rem;
-    box-shadow:  rgba(0, 0, 0, 0.05),
-        0 10px 30px rgba(0, 0, 0, 0.2);
-    width: 100%;
-    margin-top: 2rem;
-}
 
 .graficoPlaceholder {
     height: 250px;
@@ -59,7 +27,144 @@
     border-radius: 10px;
 }
 body {
-    background: linear-gradient(135deg, #111e3b 0%, #0c0f13 100%);
+    background: linear-gradient(5deg, #0a1220 0%, #1b2d43 100%);
     margin: 0;
     min-height: 100vh;
+}
+
+
+.btnAggiungi {
+    background-color: #ffffff;
+    color: #000000;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 16px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btnElimina {
+    background-color: #dc3545;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 14px;
+    font-weight: semi-bold;
+    cursor: pointer;
+}
+
+.btnGenera {
+    background-color: #365bd4;
+    color: #f7fff9;
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    width: 50%;
+    font-weight: semi-bold;
+    margin-top: 15px;
+    cursor: pointer;
+}
+
+.btnGenera:hover {
+    background-color: #364166;
+}
+
+
+
+
+.cardGrafico {
+    background: linear-gradient(1deg, rgb(9, 9, 54), rgba(20, 20, 40, 0.9));
+    border-radius: 15px;
+    padding: 2rem;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    width: 100%;
+}
+
+.btnSalva {
+
+    background-color:  #a855f7;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 12px;
+    width: 100%;
+    font-weight: bold;
+    cursor: pointer;
+    margin-bottom: 15px;
+}
+
+.btnTrasferisciOut {
+    background-color:  #21106d;
+    color: #fcfeff;
+    border: 1px solid #0b0d0f;
+    border-radius: 8px;
+    padding: 10px;
+    width: 100%;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btnDonaOut {
+    background-color: rgb(69, 15, 131);
+    color: #efefef;
+    border: 1px solid #200a4e;
+    border-radius: 8px;
+    padding: 10px;
+    width: 100%;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.btnIcona {
+    width: 65px;
+    height: 65px;
+    background-color: #734d81;
+    border: none;
+    border-radius: 10px;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+}
+
+.btnIconaAttivo {
+    background-color: #df6dd3;
+}
+
+.inputPersonalizzato {
+    background-color: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1) ;
+    color: white ;
+    padding: 12px ;
+    border-radius: 10px ;
+    transition: all 0.3s ease;
+}
+
+.inputPersonalizzato:focus {
+    background-color: rgba(10, 1, 1, 0.08) ;
+    color:white;
+    border-color: #a855f7;
+    box-shadow: 0 0 10px rgba(168, 85, 247, 0.2);
+    outline: none ;
+}
+
+
+.schermataCentrata {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #111e3b 0%, #0c0f13 100%);
+    padding: 20px;
+}
+
+.cardAggiungi {
+    background-color: #0d1424;
+    border-radius: 15px;
+    padding: 2rem;
+    width: 100%;
+    max-width: 450px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    color: rgb(255, 255, 255);
 }
