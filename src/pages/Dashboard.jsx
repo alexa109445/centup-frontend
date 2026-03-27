@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import styles from '../modules/Dashboard.module.css';
 import Header from '../components/Header';
 import SaldoCard from '../components/SaldoCard';
 import CarteCard from '../components/CarteCard';

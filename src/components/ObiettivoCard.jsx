@@ -37,7 +37,7 @@ const ObiettivoCard = (props) => {
             <div className="p-3 border border-primary rounded text-center">
                 <h5 className="mb-3 text-white">Scegli carta:</h5>
                 {props.listaCarte.map(function(c) {
-                    const numeroTesto = c.numero.toString();
+                    const numeroTesto = String(c.numero);
                     const finale = numeroTesto.substring(numeroTesto.length - 4);
                     return (
                         <button key={c.id} onClick={() => props.onTrasferisci(c.numero)} className="btn btn-dark w-100 mb-2 text-start">
@@ -90,34 +90,19 @@ const ObiettivoCard = (props) => {
     else if (percentuale >= 100 && props.nascondiRaggiungimento === false) {
         bloccoComandi = (
             <div className="p-3 border border-success rounded text-center">
-                <h4 className="text-success">Obiettivo raggiunto!</h4>
+                <h4 className="text-success fw-bold">Obiettivo raggiunto!</h4>
                 <div className="row g-2 mt-3">
-    <div className="col-12 col-sm-4">
-        <button 
-            onClick={() => props.setMostraInputEstensione(true)} 
-            className="btn btn-warning fw-bold w-100"
-        >
-            Estendi
-        </button>
-    </div>
-    <div className="col-12 col-sm-4">
-        <button 
-            onClick={() => props.setSelettoreTrasferimentoAttivo(true)} 
-            className="btn btn-primary fw-semibold w-100"
-        >
-            Trasferisci
-        </button>
-    </div>
-    <div className="col-12 col-sm-4">
-        <button 
-            onClick={() => props.setSelettoreDonazioneAttivo(true)} 
-            className="btn btn-info fw-semibold w-100"
-        >
-            Dona
-        </button>
-    </div>
-</div>
-</div>
+                    <div className="col-12 col-sm-4">
+                        <button onClick={() => props.setMostraInputEstensione(true)} className="btn btn-light fw-bold w-100">Estendi</button>
+                    </div>
+                    <div className="col-12 col-sm-4">
+                        <button onClick={() => props.setSelettoreTrasferimentoAttivo(true)} className="btn btn-outline-light fw-bold w-100">Trasferisci</button>
+                    </div>
+                    <div className="col-12 col-sm-4">
+                        <button onClick={() => props.setSelettoreDonazioneAttivo(true)} className="btn btn-outline-danger fw-bold w-100">Dona</button>
+                    </div>
+                </div>
+            </div>
         );
     }
     else {
@@ -167,16 +152,16 @@ const ObiettivoCard = (props) => {
                 </button>
 
                 <div className="row g-2 mt-3">
-    <div className="col-12 col-sm-4">
-        <button onClick={() => props.setMostraInputEstensione(true)} className="btn btn-light fw-semibold w-100">Estendi</button>
-    </div>
-    <div className="col-12 col-sm-4">
-        <button onClick={() => props.setSelettoreTrasferimentoAttivo(true)} className="btn btn-lightfw-semibold w-100">Trasferisci</button>
-    </div>
-    <div className="col-12 col-sm-4">
-        <button onClick={() => props.setSelettoreDonazioneAttivo(true)} className="btn btn-light fw-semibold w-100">Dona</button>
-    </div>
-</div>
+                    <div className="col-12 col-sm-4">
+                        <button onClick={() => props.setMostraInputEstensione(true)} className="btn btn-primary fw-bold w-100">Estendi</button>
+                    </div>
+                    <div className="col-12 col-sm-4">
+                        <button onClick={() => props.setSelettoreTrasferimentoAttivo(true)} className="btn btn-light fw-bold w-100">Trasferisci</button>
+                    </div>
+                    <div className="col-12 col-sm-4">
+                        <button onClick={() => props.setSelettoreDonazioneAttivo(true)} className="btn btn-info fw-bold w-100">Dona</button>
+                    </div>
+                </div>
             </div>
         );
     }
