@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import styles from '../modules/Dashboard.module.css';
 import Header from '../components/Header';
 import SaldoCard from '../components/SaldoCard';
 import CarteCard from '../components/CarteCard';
@@ -172,7 +171,7 @@ const Dashboard = () => {
         bloccoRiscontro = (
             <div className="row mb-3">
                 <div className="col-12">
-                    <div className="p-3 bg-success bg-opacity-25 border border-success rounded text-center text-white fw-bold">
+                    <div className="p-3 bg-dark bg-opacity-25 border border-success rounded text-center text-white fw-bold">
                         {messaggioSpesa}
                     </div>
                 </div>
@@ -181,21 +180,30 @@ const Dashboard = () => {
     }
 
     return (
-        <div className={" container-fluid px-3 px-md-5 mt-4 mb-5 " + styles.textWhite}>
+        <div className={"container-fluid px-3 px-md-5 mt-4 mb-5 "}>
             <Header nomeUtente={utenteCorrente.nome} onLogout={effettuaLogout} />
             
             {bloccoRiscontro}
 
-            <div className="row g-4 mb-4">
-                <SaldoCard saldo={utenteCorrente.saldoSalvadanaio} onGeneraSpesa={generaSpesaSimulata} />
-                <CarteCard 
-                    listaCarte={listaCarte} 
-                    onAggiungi={() => navigazione('/aggiungi-carta')} 
-                    idCartaVisibile={idCartaVisibile} 
-                    onMostraNascondi={mostraNascondiNumeroCarta} 
-                    onElimina={eliminaCartaDalDatabase} 
-                />
+            <div className="row justify-content-between g-4 mb-5">
+                <div className="col-12 col-md-5">
+                    <SaldoCard 
+                        saldo={utenteCorrente.saldoSalvadanaio} 
+                        onGeneraSpesa={generaSpesaSimulata} 
+                    />
+                </div>
+
+                <div className="col-12 col-md-6">
+                    <CarteCard 
+                        listaCarte={listaCarte} 
+                        onAggiungi={() => navigazione('/aggiungi-carta')} 
+                        idCartaVisibile={idCartaVisibile} 
+                        onMostraNascondi={mostraNascondiNumeroCarta} 
+                        onElimina={eliminaCartaDalDatabase} 
+                    />
+                </div>
             </div>
+
 
             <ObiettivoCard 
                 risparmioReale={risparmioReale}

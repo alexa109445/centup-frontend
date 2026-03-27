@@ -1,31 +1,4 @@
 
-
-.cardLabel {
-    font-size: 1rem;
-    color: rgba(255, 255, 255, 0.8);
-    font-weight: 500;
-}
-
-.cardContent {
-    margin-top: 1 rem;
-}
-
-.saldoValore {
-    font-size: 2.5rem;
-    font-weight: bold;
-    color: #ffffff;
-}
-
-
-.graficoPlaceholder {
-    height: 250px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: rgba(255, 255, 255, 0.02);
-    border: 1px dashed rgba(255, 255, 255, 0.2);
-    border-radius: 10px;
-}
 body {
     background: linear-gradient(5deg, #0a1220 0%, #1b2d43 100%);
     margin: 0;
@@ -93,27 +66,7 @@ body {
     margin-bottom: 15px;
 }
 
-.btnTrasferisciOut {
-    background-color:  #21106d;
-    color: #fcfeff;
-    border: 1px solid #0b0d0f;
-    border-radius: 8px;
-    padding: 10px;
-    width: 100%;
-    font-weight: bold;
-    cursor: pointer;
-}
 
-.btnDonaOut {
-    background-color: rgb(69, 15, 131);
-    color: #efefef;
-    border: 1px solid #200a4e;
-    border-radius: 8px;
-    padding: 10px;
-    width: 100%;
-    font-weight: bold;
-    cursor: pointer;
-}
 
 .btnIcona {
     width: 65px;
@@ -160,11 +113,11 @@ body {
 }
 
 .cardAggiungi {
-    background-color: #0d1424;
+    background-color: transparent;
     border-radius: 15px;
     padding: 2rem;
     width: 100%;
     max-width: 450px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 10px 15px rgba(0, 0, 0, 0.5);
     color: rgb(255, 255, 255);
 }

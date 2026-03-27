@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
-import styles from '../modules/Login.module.css';
+import styles from '../modules/Auth.module.css';
 
 const Login = () => {
     const [email, setEmail] = useState('');
@@ -26,6 +26,12 @@ const Login = () => {
             setErrore('Email o password non corretti. Riprova.');
         }
     };
+
+    let bloccoErrore = "";
+    if (errore !== '') {
+        bloccoErrore = <div className="alert alert-danger text-center">{errore}</div>;
+    }
+
     return (
         <div className={"w-100 d-flex justify-content-center align-items-center vh-100 " + styles.sfondoPagina}>
             <div className={"card shadow-lg border-0 p-4 " + styles.cardAuth}>
@@ -35,7 +41,7 @@ const Login = () => {
                     <p className="text-light">Accedi al tuo salvadanaio CentUp</p>
                 </div>
 
-                {errore && <div className="alert alert-danger text-center">{errore}</div>}
+                {bloccoErrore}
 
                 <form onSubmit={handleSubmit}>
                     <div className="mb-3">

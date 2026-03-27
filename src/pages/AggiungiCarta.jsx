@@ -78,7 +78,7 @@ const AggiungiCarta = () => {
                         value={numeroCarta} 
                         onChange={gestisciCambioCarta} 
                         placeholder="1234 5678 9012 3456"
-                        className={"form-control " + styles.inputCarta}
+                        className={"form-control "}
                     />
                 </div>
 

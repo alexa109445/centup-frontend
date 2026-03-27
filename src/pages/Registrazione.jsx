@@ -1,10 +1,10 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import axios from 'axios';
-import styles from '../modules/Registrazione.module.css';
+import styles from '../modules/Auth.module.css';
 
-const Registrazione = ()=> {
-    const[nome, setNome] = useState('');
+const Registrazione = () => {
+    const [nome, setNome] = useState('');
     const [cognome, setCognome] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -39,7 +39,18 @@ const Registrazione = ()=> {
             setErrore('Errore durante la registrazione. Riprova.');
         }
     };
-   return (
+
+    let bloccoSuccesso = "";
+    if (successo === true) {
+        bloccoSuccesso = <div className="alert alert-success text-center">Registrazione completata! Reindirizzamento...</div>;
+    }
+
+    let bloccoErrore = "";
+    if (errore !== '') {
+        bloccoErrore = <div className="alert alert-danger text-center">{errore}</div>;
+    }
+
+    return (
         <div className={"w-100 d-flex justify-content-center align-items-center vh-100 " + styles.sfondoPagina}>
             <div className={"card shadow-lg border-0 p-4 " + styles.cardAuth}>
                 <div className="text-center mb-4">
@@ -48,8 +59,8 @@ const Registrazione = ()=> {
                     <p className="text-light">Inizia a risparmiare con CentUp</p>
                 </div>
 
-                {successo && <div className="alert alert-success text-center">Registrazione completata! Reindirizzamento...</div>}
-                {errore && <div className="alert alert-danger text-center">{errore}</div>}
+                {bloccoSuccesso}
+                {bloccoErrore}
 
                 <form onSubmit={handleSubmit}>
                     <div className="mb-3">

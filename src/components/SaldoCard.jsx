@@ -1,20 +1,14 @@
-import styles from '../modules/Dashboard.module.css';
 
-const SaldoCard = ({ saldo, onGeneraSpesa }) => {
+import styles from '../modules/Dashboard.module.css';
+const SaldoCard = (props) => {
     return (
-        <div className="col-12 col-sm-6">
-            <div className={styles.cardInfo + " " + styles.cardSaldo}>
-                <h3 className={styles.cardLabel}>Saldo Salvadanaio</h3>
-                <div>
-                    <h2 className={styles.saldoValore}>€ {saldo}</h2>
-                    <button 
-                        onClick={onGeneraSpesa} 
-                        className={styles.btnGenera}
-                    >
-                        Genera Spesa 
-                    </button>
-                </div>
-            </div>
+        <div className="text-white">
+            <p className="mb-2 opacity-75">Saldo Salvadanaio</p>
+            <h1 className="fw-bold mb-4 display-5">€ {props.saldo}</h1>
+            <button onClick={props.onGeneraSpesa} className={styles.btnGenera}>
+    Genera Spesa
+</button>
+
         </div>
     );
 };
